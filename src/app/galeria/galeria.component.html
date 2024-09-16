@@ -1,0 +1,49 @@
+
+
+<select class="form-select mb-3" (change)="filtrarPorCategoria($any($event.target).value)">
+    <option value="">Todas las categorías</option>
+    <option *ngFor="let categoria of categorias" [value]="categoria">
+    {{ categoria }}
+  </option>
+</select>
+
+<div id="carouselGaleria" class="carousel slide" data-bs-ride="carousel">
+  <div class="carousel-inner">
+    <div class="carousel-item" *ngFor="let imagen of imagenes; let first = first" [class.active]="first">
+      <img [src]="imagen.url" class="d-block w-100" [alt]="imagen.titulo">
+      <div class="carousel-caption d-none d-md-block">
+        <h5>{{ imagen.titulo }}</h5>
+        <p>{{ imagen.descripcion }}</p>
+        <button class="btn btn-primary" (click)="toggleFavorito(imagen)">
+          {{ imagen.esFavorito ? 'Quitar de favoritos' : 'Añadir a favoritos' }}
+        </button>
+      </div>
+    </div>
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselGaleria" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Anterior</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselGaleria" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Siguiente</span>
+  </button>
+</div>
+
+<h2 class="mt-4">Imágenes Favoritas</h2>
+<div class="row" *ngIf="obtenerFavoritos().length > 0">
+  <div class="col-md-4 mb-3" *ngFor="let favorito of obtenerFavoritos()">
+    <div class="card">
+      <img [src]="favorito.url" class="card-img-top" [alt]="favorito.titulo">
+      <div class="card-body">
+        <h5 class="card-title">{{ favorito.titulo }}</h5>
+        <p class="card-text">{{ favorito.descripcionLarga}}</p>
+        <button class="btn btn-danger" (click)="toggleFavorito(favorito)">
+          Quitar de favoritos
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<p *ngIf="obtenerFavoritos().length === 0">No tienes imágenes favoritas aún.</p>
